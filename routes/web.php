@@ -21,6 +21,14 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+Route::get('/form', function () {
+    return view('form');
+})->name('form');
+
 Route::get('/admin', function () {
     return view('admin.dashboard');
 })->name('admin');
+
+Route::resource('user', 'App\Http\Controllers\UserController');
+Route::resource('application', 'App\Http\Controllers\ApplicationController');
+Route::resource('bank', 'App\Http\Controllers\BankController');

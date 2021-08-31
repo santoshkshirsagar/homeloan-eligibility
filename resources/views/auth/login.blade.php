@@ -2,12 +2,11 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row">
         <div class="col-md-6">
-            <h2 class="text-center py-4">Login</h2>
+            <h2 class="py-4">Get Started</h2>
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
-
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" placeholder="name@example.com" name="email" value="" required autocomplete="email">
                             <label for="email">{{ __('E-Mail Address') }}</label>

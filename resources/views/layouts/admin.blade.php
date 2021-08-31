@@ -29,10 +29,13 @@
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 </ul>
                 <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/') }}">{{ __('View Website') }}</a>
+                </li>
                 @guest
                     @if (Route::has('login'))
                         <li class="nav-item">
-                        <a class="nav-link" href="{{ route('login') }}" href="#">{{ __('Login') }}</a>
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
                     @endif
                     @if (Route::has('register'))
                         <li class="nav-item">
@@ -45,8 +48,7 @@
                         {{ Auth::user()->name }}
                     </a>
                     <ul class="dropdown-menu  dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
-                        <li><a class="dropdown-item" href="#">Action</a></li>
-                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                        <li><a class="dropdown-item" href="{{ route('admin') }}">Dashboard</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
@@ -62,51 +64,40 @@
             </div>
         </nav>
 
+        <div class="container-fluid">
         <div class="row">
-            <div class="col">
-
-            <div class="flex-shrink-0 p-3" style="width:250px;">
-                    <?php
-                    $menu=array(
-                        "Home" => array(
-                            route('admin') => ["icon"=>"fas fa-tachometer-alt", "label"=>"Dashboard"],
-                        ),
-                        "Website" => array(
-                            route('home') => ["icon"=>"fas fa-home", "label"=>"Home"],
-                        ),
-                    );
-                    ?>
-                    <ul class="list-unstyled ps-0">
-                        @foreach($menu as $key=>$submenu)
-                                <li class="mb-1">
-                                <a class="btn btn-toggle align-items-center rounded @if(!array_key_exists(url()->current(), $submenu)) collapsed @endif" data-bs-toggle="collapse" data-bs-target="#{{ $key }}-collapse" aria-expanded="@if(array_key_exists(url()->current(), $submenu)) true @else false @endif">
-                                {{ $key }}
-                                </a>
-                                <div class="collapse @if(array_key_exists(url()->current(), $submenu)) show @endif" id="{{ $key }}-collapse">
-                                <ul class="nav nav-pills flex-column">
-                                    @foreach($submenu as $url=>$link)
-                                    <li class="nav-item">
-                                        <a class="nav-link @if(url()->current()==$url) bg-secondary text-white @endif" href="{{ $url }}"><i class="{{ $link['icon'] }} fa-fw"></i> 
-                                        <span class="nav-text">{{ $link['label'] }}</span>
-                                        </a>
-                                    </li>
-                                    @endforeach
-                                </ul>
-                                </div>
-                                </li>
-                        @endforeach
-                    </ul>
-                </div>
-
-
-
-
+            <div class="col-md-2 py-4 border-end">
+                <ul class="nav flex-column nav-pills me-3">
+                    <li class="nav-item">
+                        <a class="nav-link @if(url()->current()==route('admin')) active @endif" href="{{ route('admin') }}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if(url()->current()==route('application.index')) active @endif" href="{{ route('application.index') }}">Applications</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if(url()->current()==route('bank.index')) active @endif" href="{{ route('bank.index') }}">Banks</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link @if(url()->current()==route('user.index')) active @endif" href="{{ route('user.index') }}">Users</a>
+                    </li>
+                </ul>
             </div>
-            <div class="col-md-9">
-                <main class="py-4">
+            <div class="col  bg-white">
+                <main class="py-4" style="min-height:500px;">
+                    @if (session('alert-success'))
+                        <div class="alert alert-success">
+                            {{ session('alert-success') }}
+                        </div>
+                    @endif
+                    @if (session('alert-danger'))
+                        <div class="alert alert-danger">
+                            {{ session('alert-danger') }}
+                        </div>
+                    @endif
                     @yield('content')
                 </main>
             </div>
+        </div>
         </div>
 
     </div>
