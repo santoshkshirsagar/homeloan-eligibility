@@ -40,8 +40,14 @@ class ApplicationController extends Controller
     {
         //
         $validated=$request->validate([
-            "name"=>"required",
-            "interest_rate"=>"required",
+            "first_name"=>"required",
+            "last_name"=>"required",
+            "email"=>"required|email",
+            "dob"=>"required",
+            "gender"=>"required",
+            "employment"=>"required",
+            "income"=>"required",
+            "existing_emi"=>"required",
         ]);
         $application = Application::create($validated);
         return redirect(route('application.index'))->with('alert-success',"Created Successfully");

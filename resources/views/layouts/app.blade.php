@@ -33,7 +33,7 @@
                 </ul>
                 <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 @guest
-                    @if (Route::has('login'))
+                    <!-- @if (Route::has('login'))
                         <li class="nav-item">
                         <a class="nav-link" href="{{ route('login') }}" href="#">{{ __('Login') }}</a>
                     @endif
@@ -41,7 +41,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
                         </li>
-                    @endif
+                    @endif -->
                 @else
                     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
