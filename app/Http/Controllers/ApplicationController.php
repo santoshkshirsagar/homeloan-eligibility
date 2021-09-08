@@ -43,14 +43,14 @@ class ApplicationController extends Controller
             "first_name"=>"required",
             "last_name"=>"required",
             "email"=>"required|email",
-            "dob"=>"required",
+            "dob"=>"required|date|before:-18 years",
             "gender"=>"required",
             "employment"=>"required",
             "income"=>"required",
             "existing_emi"=>"required",
         ]);
         $application = Application::create($validated);
-        return redirect(route('application.index'))->with('alert-success',"Created Successfully");
+        return redirect(route('application.show',['application'=>$application->id]))->with('alert-success',"Created Successfully");
     }
 
     /**
@@ -62,6 +62,17 @@ class ApplicationController extends Controller
     public function show(Application $application)
     {
         //
+        
+        $banks = \App\Models\Bank::get();
+        /* 
+        $capacity = $application->income - ((40*$application->income)/100) - $application->existing_emi;
+        $principalAmount = 100000;
+        $ratePerAnnum = 10;
+        $rateOfInterest = $ratePerAnnum/12/100;
+        $numberInstallments = 29*12;
+        $emi = ($principalAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
+        $eligibility= ($capacity/$emi)*100000; */
+        return view('application.show', compact('application','banks'));
     }
 
     /**

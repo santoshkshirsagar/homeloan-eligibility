@@ -15,14 +15,14 @@
                             <div class="row g-3 mb-3">
                                 <div class="col">
                                     <label for="first_name">First Name</label>
-                                    <input name="first_name" type="text" class="form-control" >
+                                    <input name="first_name" type="text" class="form-control" value="{{ old('first_name') }}" >
                                     @error('first_name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                                 <div class="col">
                                     <label for="last_name">Last Name</label>
-                                    <input name="last_name" type="text" class="form-control" >
+                                    <input name="last_name" type="text" class="form-control" value="{{ old('last_name') }}" >
                                     @error('last_name')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
@@ -31,14 +31,14 @@
 
                             <div class="mb-3">
                                 <label for="email">Email</label>
-                                <input type="text" name="email" class="form-control">
+                                <input type="text" name="email" class="form-control" value="{{ old('email') }}">
                                     @error('email')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="dob">Date of Birth</label>
-                                <input type="date" name="dob" class="form-control">
+                                <input type="date" name="dob" class="form-control" value="{{ old('dob') }}">
                                     @error('dob')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
