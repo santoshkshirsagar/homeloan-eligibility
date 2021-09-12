@@ -43,7 +43,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="dob">Date of Birth</label>
-                                <input type="date" wire:model="dob" class="form-control" >
+                                <input type="date" wire:model="dob" class="form-control"  max="{{ $maxDate }}">
                                     @error('dob')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
