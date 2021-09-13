@@ -26,8 +26,10 @@ class Check extends Component
         $this->dob = $this->profile->dob;
         $this->gender = $this->profile->gender;
         $this->employment = $this->profile->employment;
-        $this->income = $this->profile->income;
-        $this->existing_emi = $this->profile->existing_emi;
+        if($this->profile->income){
+            $this->income = $this->profile->income;
+            $this->existing_emi = $this->profile->existing_emi;
+        }
     }
     protected $rules = [
         "first_name"=>"required",
@@ -41,6 +43,7 @@ class Check extends Component
     ];
     public function check(){
         $validated = $this->validate();
+        $this->profile->mobile=$this->mobile;
         $this->profile->first_name=$validated['first_name'];
         $this->profile->last_name=$validated['last_name'];
         $this->profile->email=$validated['email'];

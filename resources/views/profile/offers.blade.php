@@ -47,5 +47,23 @@
             </tr>
         @endforeach
         </table>
+
+        <div class="row my-5 border-top py-5">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="identity_type">Select Identity proof</label>
+                    <select name="identity_type" id="identity_type" class="form-control">
+                        <option value="">Driving License</option>
+                        <option value="">PAN</option>
+                        <option value="">Voter Id</option>
+                        <option value="">Valid Passport</option>
+                    </select>
+                </div>
+                <div class="mb-3">
+                    <label for="identity_file">Upload Identity File</label>
+                    <input type="file" name="identity_file" id="identity_file" class="form-control">
+                </div>
+            </div>
+        </div>
     </div>
 @endsection
