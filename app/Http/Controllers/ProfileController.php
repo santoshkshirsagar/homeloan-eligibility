@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Profile;
 use Illuminate\Http\Request;
+use App\Models\Application;
 
 class ProfileController extends Controller
 {
@@ -52,10 +53,31 @@ class ProfileController extends Controller
 
     public function offers()
     {
-        //
         $profile = Profile::where('mobile',session('mobile'))->firstOrFail();
         $banks = \App\Models\Bank::get();
         return view('profile.offers', compact('profile','banks'));
+    }
+    public function apply(Request $request)
+    { 
+        $profile = Profile::where('mobile',session('mobile'))->firstOrFail();
+        $profileData = $profile->toArray();
+        unset($profileData['created_at']);
+        unset($profileData['updated_at']);
+        unset($profileData['id']);
+        $validated = $request->validate([
+            "bank_id" => "required",
+            "interest_rate" => "required",
+            "amount" => "required",
+            "years" => "required",
+        ]);
+        $data = array_merge($profileData,$validated);
+        $application = Application::create($data);
+        return redirect(route('apply.documents', ['application'=>$application->id]));
+    }
+
+    public function documents(Application $application)
+    {
+        return view('profile.documents', compact('application'));
     }
 
     /**

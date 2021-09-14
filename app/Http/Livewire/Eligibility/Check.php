@@ -5,12 +5,16 @@ namespace App\Http\Livewire\Eligibility;
 use Livewire\Component;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
-
+use DateTime;
 class Check extends Component
 {
     public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile;
 
     public function mount(){
+        $pending = \App\Models\Application::where('status','pending')->first();
+        if($pending){
+            return redirect()->to(route('apply.documents',['application'=>$pending->id]));
+        }
         $currentDateTime = Carbon::now();
         $this->maxDate = Carbon::now()->subYears(18)->format('Y-m-d');
         $this->income=0;
@@ -41,6 +45,15 @@ class Check extends Component
         "income"=>"required",
         "existing_emi"=>"required",
     ];
+
+    function updatedDob()
+    {
+        $from = new DateTime($this->dob);
+        $to   = new DateTime('today');
+        $from->format('d-m-Y');
+        $age = $from->diff($to)->y;
+        $this->maxYears = 60 - $age;
+    }
     public function check(){
         $validated = $this->validate();
         $this->profile->mobile=$this->mobile;
