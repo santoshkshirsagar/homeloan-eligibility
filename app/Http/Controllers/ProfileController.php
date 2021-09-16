@@ -75,6 +75,12 @@ class ProfileController extends Controller
         return redirect(route('apply.documents', ['application'=>$application->id]));
     }
 
+    public function applications()
+    {
+        $applications = \App\Models\Application::where('mobile',session('mobile'))->paginate(10);
+        return view('profile.applications', compact('applications'));
+    }
+
     public function documents(Application $application)
     {
         return view('profile.documents', compact('application'));

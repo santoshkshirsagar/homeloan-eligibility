@@ -11,9 +11,9 @@ class Check extends Component
     public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile;
 
     public function mount(){
-        $pending = \App\Models\Application::where('status','pending')->first();
-        if($pending){
-            return redirect()->to(route('apply.documents',['application'=>$pending->id]));
+        $count = \App\Models\Application::where('mobile',session('mobile'))->where('status','pending')->count();
+        if($count>0){
+            return redirect()->to(route('profile.applications'));
         }
         $currentDateTime = Carbon::now();
         $this->maxDate = Carbon::now()->subYears(18)->format('Y-m-d');

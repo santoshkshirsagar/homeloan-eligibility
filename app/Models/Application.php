@@ -9,4 +9,9 @@ class Application extends Model
 {
     use HasFactory;
     protected $guarded=[];
+
+    public function bank()
+    {
+        return $this->belongsTo(\App\Models\Bank::class);
+    }
 }

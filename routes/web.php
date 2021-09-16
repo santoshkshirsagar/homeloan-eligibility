@@ -28,6 +28,9 @@ Route::get('/form', function () {
 Route::get('offers', [App\Http\Controllers\ProfileController::class, 'offers'])->name('offers');
 Route::post('apply', [App\Http\Controllers\ProfileController::class, 'apply'])->name('apply');
 Route::get('documents/{application}', [App\Http\Controllers\ProfileController::class, 'documents'])->name('apply.documents');
+
+Route::get('applications', [App\Http\Controllers\ProfileController::class, 'applications'])->name('profile.applications');
+
 Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin');
     Route::resource('user','App\Http\Controllers\UserController');
