@@ -85,6 +85,23 @@ class ProfileController extends Controller
     {
         return view('profile.documents', compact('application'));
     }
+    public function submit(Request $request, Application $application)
+    {
+        $rules= array(
+            "identity_type"=> "required",
+            "identity_file"=> "required|mimes:pdf|max:2000",
+            "residence_proof_type" => "required",
+            "residence_proof" => "required|mimes:jpeg,bmp,png,pdf",
+        );
+        
+        if($application->employment=="business"){
+
+        }else{
+            $rules['salary_slips']="required|mimes:jpeg,bmp,png,pdf";
+            $rules['form_16']="required|image";
+        }
+        $validated = $request->validate($rules);
+    }
 
     /**
      * Show the form for editing the specified resource.

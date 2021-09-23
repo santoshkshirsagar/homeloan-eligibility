@@ -13,6 +13,11 @@
                 <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
                 </ul>
                 <ul class="navbar-nav ms-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                @if(session('mobile'))
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url('/change') }}">{{ __('Change Mobile') }}</a>
+                </li>
+                @endif
                 @guest
                     <!-- @if (Route::has('login'))
                         <li class="nav-item">

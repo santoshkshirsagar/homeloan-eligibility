@@ -10,6 +10,7 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Rate</th>
+                    <th>Max Age Limit</th>
                     <th>Action</th>
                 </tr>
                 @foreach($banks as $bank)
@@ -17,6 +18,7 @@
                         <td>{{ $bank->id }}</td>
                         <td>{{ $bank->name }}</td>
                         <td>{{ $bank->interest_rate }}</td>
+                        <td>{{ $bank->max_age_limit }}</td>
                         <td>
                             <a href="{{ route('bank.edit',['bank'=>$bank->id]) }}">Edit</a>
                         </td>

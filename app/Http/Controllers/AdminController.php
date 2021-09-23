@@ -8,6 +8,7 @@ class AdminController extends Controller
 {
     //
     public function dashboard(){
-        return view('admin.dashboard');
+        $applicationCount = \App\Models\Application::count();
+        return view('admin.dashboard', compact('applicationCount'));
     }
 }

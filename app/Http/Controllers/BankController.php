@@ -42,6 +42,7 @@ class BankController extends Controller
         $validated=$request->validate([
             "name"=>"required",
             "interest_rate"=>"required",
+            "max_age_limit"=>"required|numeric|max:70"
         ]);
         $bank = Bank::create($validated);
         return redirect(route('bank.index'))->with('alert-success',"Created Successfully");
@@ -83,6 +84,7 @@ class BankController extends Controller
         $validated=$request->validate([
             "name"=>"required",
             "interest_rate"=>"required",
+            "max_age_limit"=>"required",
         ]);
         $bank->update($validated);
         return redirect(route('bank.index'))->with('alert-success',"Updated Successfully");

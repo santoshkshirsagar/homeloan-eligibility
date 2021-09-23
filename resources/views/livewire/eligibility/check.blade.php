@@ -112,6 +112,35 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Property Details
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="">Property Price <small class="text-muted">Leave blank if property not finalised</small></label>
+                                <input class="form-control" type="text" wire:model="property_price">
+                                    @error('property_price')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="">Required Loan Amount</label>
+                                <input class="form-control" type="text" wire:model="required_amount">
+                                    @error('required_amount')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" wire:model="first_home" id="flexCheckDefault">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    This is my first home
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="card mb-3">
                         <div class="card-body">
                             

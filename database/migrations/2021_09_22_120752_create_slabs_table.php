@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBanksTable extends Migration
+class CreateSlabsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,12 @@ class CreateBanksTable extends Migration
      */
     public function up()
     {
-        Schema::create('banks', function (Blueprint $table) {
+        Schema::create('slabs', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->float('interest_rate', 8, 2);
-            $table->integer('max_age_limit', 3);
+            $table->string('label');
+            $table->integer('from');
+            $table->integer('to');
+            $table->integer('percentage');
             $table->timestamps();
         });
     }
@@ -29,6 +30,6 @@ class CreateBanksTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('banks');
+        Schema::dropIfExists('slabs');
     }
 }

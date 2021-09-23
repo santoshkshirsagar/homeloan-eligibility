@@ -8,13 +8,13 @@ use Carbon\Carbon;
 use DateTime;
 class Check extends Component
 {
-    public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile;
+    public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile, $property_price, $required_amount, $first_home;
 
     public function mount(){
-        $count = \App\Models\Application::where('mobile',session('mobile'))->where('status','pending')->count();
+        /* $count = \App\Models\Application::where('mobile',session('mobile'))->where('status','pending')->count();
         if($count>0){
             return redirect()->to(route('profile.applications'));
-        }
+        } */
         $currentDateTime = Carbon::now();
         $this->maxDate = Carbon::now()->subYears(18)->format('Y-m-d');
         $this->income=0;
@@ -34,6 +34,9 @@ class Check extends Component
             $this->income = $this->profile->income;
             $this->existing_emi = $this->profile->existing_emi;
         }
+        $this->property_price = $this->profile->property_price;
+        $this->required_amount = $this->profile->required_amount; 
+        $this->first_home = $this->profile->first_home;
     }
     protected $rules = [
         "first_name"=>"required",
@@ -44,6 +47,9 @@ class Check extends Component
         "employment"=>"required",
         "income"=>"required",
         "existing_emi"=>"required",
+        "property_price"=>"nullable|numeric",
+        "required_amount"=>"nullable|numeric",
+        "first_home"=>"nullable|boolean",
     ];
 
     function updatedDob()
@@ -56,7 +62,8 @@ class Check extends Component
     }
     public function check(){
         $validated = $this->validate();
-        $this->profile->mobile=$this->mobile;
+        $validated['mobile']=$this->mobile;
+        /* $this->profile->mobile=$this->mobile;
         $this->profile->first_name=$validated['first_name'];
         $this->profile->last_name=$validated['last_name'];
         $this->profile->email=$validated['email'];
@@ -65,7 +72,8 @@ class Check extends Component
         $this->profile->employment=$validated['employment'];
         $this->profile->income=$validated['income'];
         $this->profile->existing_emi=$validated['existing_emi'];
-        $this->profile->save();
+        $this->profile->save(); */
+        $this->profile->update($validated);
         return redirect()->to('offers');
     }
     public function exit(Request $request){

@@ -20,6 +20,13 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="mb-3">
+                    <label for="max_age_limit">Upper Age Limit</label>
+                    <input type="text" name="max_age_limit" id="max_age_limit" value="{{ old('max_age_limit') }}" class="form-control">
+                    @error('max_age_limit')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <input type="submit" value="Save" class="btn btn-primary">
             </form>
         </div>

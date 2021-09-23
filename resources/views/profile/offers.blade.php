@@ -19,12 +19,16 @@
             $to   = new DateTime('today');
             $from->format('d-m-Y');
             $age = $from->diff($to)->y;
+            $years = 60-$age;
+            if($years>30){
+                $years=30;
+            }
 
             $capacity = $profile->income - ((40*$profile->income)/100) - $profile->existing_emi;
             $principalAmount = 100000;
             $ratePerAnnum = $bank->interest_rate;
             $rateOfInterest = $ratePerAnnum/12/100;
-            $numberInstallments = (60-$age)*12;
+            $numberInstallments = ($years)*12;
             $emi = ($principalAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
             $eligibility= floor(($capacity/$emi)*100000);
 
@@ -61,7 +65,7 @@
                             <input type="hidden" name="bank_id" value="{{ $bank->id }}">
                             <input type="hidden" name="interest_rate" value="{{ $bank->interest_rate }}">
                             <input type="hidden" name="amount" value="{{ $eligibility }}">
-                            <input type="hidden" name="years" value="{{ (60-$age) }}">
+                            <input type="hidden" name="years" value="{{ ($years) }}">
                             <button type="submit" class="btn btn-sm btn-primary">Apply Now</button>
                         </form>
                     </div>
