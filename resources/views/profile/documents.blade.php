@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container mb-5">
-        <form action="{{ route('apply.submit', ['application'=>$application->id]) }}" method="post" enctype="multipart/formdata">
+        <form action="{{ route('apply.submit', ['application'=>$application->id]) }}" method="post" enctype="multipart/form-data">
             @csrf
         <h5 class="my-3">Complete your application</h5>
         <div class="row">

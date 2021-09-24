@@ -11,10 +11,10 @@ class Check extends Component
     public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile, $property_price, $required_amount, $first_home;
 
     public function mount(){
-        /* $count = \App\Models\Application::where('mobile',session('mobile'))->where('status','pending')->count();
+        $count = \App\Models\Application::where('mobile',session('mobile'))->where('status','pending')->count();
         if($count>0){
             return redirect()->to(route('profile.applications'));
-        } */
+        }
         $currentDateTime = Carbon::now();
         $this->maxDate = Carbon::now()->subYears(18)->format('Y-m-d');
         $this->income=0;
