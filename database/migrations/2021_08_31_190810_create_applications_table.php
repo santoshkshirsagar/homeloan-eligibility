@@ -23,6 +23,15 @@ class CreateApplicationsTable extends Migration
             $table->enum('employment',['salaried','business']);
             $table->float('income', 8, 2);
             $table->float('existing_emi', 8, 2);
+            $table->integer('property_price');
+            $table->integer('required_amount');
+            $table->boolean('first_home');
+            $table->string('mobile', 13);
+            $table->foreignId('bank_id');
+            $table->float('interest_rate', 8, 2);
+            $table->float('amount', 11, 2);
+            $table->integer('years');
+            $table->enum('status',['pending','submitted','processed']);
             $table->timestamps();
         });
     }

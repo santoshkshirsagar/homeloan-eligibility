@@ -24,6 +24,9 @@ class CreateProfilesTable extends Migration
             $table->enum('employment',['salaried','business']);
             $table->float('income', 8, 2);
             $table->float('existing_emi', 8, 2);
+            $table->integer('property_price');
+            $table->integer('required_amount');
+            $table->boolean('first_home');
             $table->timestamps();
         });
     }
