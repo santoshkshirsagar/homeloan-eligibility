@@ -1,6 +1,7 @@
-@extends('layouts.admin')
+@extends('layouts.app')
 
 @section('content')
+<div class="container">
     <div class="row">
         <div class="col">
             <h1>Application</h1>
@@ -93,9 +94,9 @@
                 </tr>
                 @endif
             </table>
-
-            <button class="btn btn-primary">Send to Bank</button>
             @endif
+
         </div>
     </div>
+</div>
 @endsection

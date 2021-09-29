@@ -10,6 +10,7 @@
                     <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
                 @foreach($applications as $application)
@@ -17,8 +18,9 @@
                         <td>{{ $application->id }}</td>
                         <td>{{ $application->first_name }}</td>
                         <td>{{ $application->email }}</td>
+                        <td>{{ $application->status }}</td>
                         <td>
-                            <a href="{{ route('application.edit',['application'=>$application->id]) }}">Edit</a>
+                            <a href="{{ route('application.show',['application'=>$application->id]) }}">View</a>
                         </td>
                     </tr>
                 @endforeach

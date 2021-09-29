@@ -23,10 +23,12 @@ class CreateProfilesTable extends Migration
             $table->enum('gender',['male','female']);
             $table->enum('employment',['salaried','business']);
             $table->float('income', 8, 2);
-            $table->float('existing_emi', 8, 2);
-            $table->integer('property_price');
-            $table->integer('required_amount');
-            $table->boolean('first_home');
+            $table->float('existing_emi', 8, 2)->nullable();
+            $table->integer('property_price')->nullable();
+            $table->integer('required_amount')->nullable();
+            $table->boolean('first_home')->nullable();
+            $table->boolean('coapplicant')->nullable();
+            $table->text('coapplicant_info')->nullable();
             $table->timestamps();
         });
     }

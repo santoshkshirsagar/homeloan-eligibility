@@ -1,7 +1,7 @@
 @extends('layouts.css')
 @section('body')
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm" style="background-color:#b7e425;">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     {{ config('app.name', 'Laravel') }}
@@ -16,6 +16,9 @@
                 @if(session('mobile'))
                 <li class="nav-item">
                     <a class="nav-link" href="{{ url('/change') }}">{{ __('Change Mobile') }}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('profile.applications') }}">{{ __('My Applications') }}</a>
                 </li>
                 @endif
                 @guest
@@ -52,6 +55,17 @@
 
 
         <main class="py-4">
+                    @if (session('alert-success'))
+                        <div class="alert alert-success">
+                            {{ session('alert-success') }}
+                        </div>
+                    @endif
+                    @if (session('alert-danger'))
+                        <div class="alert alert-danger">
+                            {{ session('alert-danger') }}
+                        </div>
+                    @endif
+
             @yield('content')
         </main>
     </div>

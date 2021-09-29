@@ -65,8 +65,49 @@
                                     @enderror
                             </div>
 
+                            
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="1" wire:model="coapplicant" id="coapplicant">
+                                <label class="form-check-label" for="coapplicant">
+                                Do You Wish To Add Co-Applicants While Applying For This Loan?
+                                <small class="text-muted">( All owners / proposed owners of the property have to be applicant to the loan. )</small>
+                                </label>
+                            </div>
+
                         </div>
                     </div>
+
+                    @if($coapplicant)
+                    <div class="card">
+                        <div class="card-header">
+                        Co-applicant details
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <label for="coapplicant_info">Co-applicant Gender</label><br/>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" wire:model="coapplicant_info.gender" id="coMale" value="male">
+                                    <label class="form-check-label" for="coMale">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" wire:model="coapplicant_info.gender" id="coFemale" value="female">
+                                    <label class="form-check-label" for="coFemale">Female</label>
+                                </div>
+                                    @error('coapplicant_info.gender')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="dob">Date of Birth</label>
+                                <input type="date" wire:model="coapplicant_info.dob" class="form-control"  max="{{ $maxDate }}">
+                                    @error('coapplicant_info.dob')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+                        </div>
+                    </div>
+                    @endif
+
                 </div>
                 <div class="col-md-6">
                     
@@ -113,6 +154,53 @@
                         </div>
                     </div>
 
+                    @if($coapplicant)
+
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            Co-Applicant Employment/Income Details
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" wire:model="coapplicant_info.employment" id="csalaried" value="salaried">
+                                    <label class="form-check-label" for="csalaried">Salaried</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" wire:model="coapplicant_info.employment" id="cbusiness" value="business">
+                                    <label class="form-check-label" for="cbusiness">Business</label>
+                                </div>
+                                    @error('coapplicant_info.employment')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+                            <div class="mb-3">
+                                <div class="float-end">
+                                    <input type="text" id="cincome" wire:model="coapplicant_info.income" class="form-control text-end" value="0">
+                                </div>
+                                <label for="cincome-range" class="form-label">Monthly Income</label>
+                                <input type="range" class="form-range" min="0" max="500000" wire:model="coapplicant_info.income" id="cincome-range" value="0" oninput="document.getElementById('cincome').value=this.value">
+                                    @error('coapplicant_info.income')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="float-end">
+                                    <input type="text" id="cemi" wire:model="coapplicant_info.existing_emi" class="form-control text-end" value="0">
+                                </div>
+                                <label for="emi-range" class="form-label">Existing EMI </label>
+                                <input wire:model="coapplicant_info.existing_emi" type="range" class="form-range" min="0" max="500000" id="cemi-range" value="0" oninput="document.getElementById('cemi').value=this.value">
+                                <!-- oninput="document.getElementById('emi').value=this.value" -->
+                                    @error('coapplicant_info.existing_emi')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    @endif
+
                     <div class="card mb-3">
                         <div class="card-header">
                             Property Details
@@ -143,9 +231,7 @@
 
                     <div class="card mb-3">
                         <div class="card-body">
-                            
                         <button class="btn btn-primary w-100">Calculate Loan Eligibility</button>
-
                         </div>
                     </div>
                 </div>

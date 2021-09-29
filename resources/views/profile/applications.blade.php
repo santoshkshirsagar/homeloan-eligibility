@@ -20,7 +20,11 @@
                         <a href="{{ route('apply.documents',['application'=>$application->id]) }}" class="btn btn-sm btn-primary">
                             Complete
                         </a>
+                        <a href="{{ route('apply.cancel',['application'=>$application->id]) }}" class="btn btn-sm btn-danger">
+                            Cancel
+                        </a>
                     @endif
+                    <a class="btn btn-sm btn-info" href="{{ route('profile.applications.view',['application'=>$application->id]) }}">View</a>
                     </td>
                 </tr>
             @endforeach

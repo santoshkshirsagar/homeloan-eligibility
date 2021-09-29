@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use App\Models\Application;
-
+use DateTime;
 class ProfileController extends Controller
 {
     /**
@@ -51,11 +51,44 @@ class ProfileController extends Controller
         //
     }
 
+    public function applicationview(\App\Models\Application $application){
+        return view('application.view',compact('application'));
+    }
+
     public function offers()
     {
         $profile = Profile::where('mobile',session('mobile'))->firstOrFail();
         $banks = \App\Models\Bank::get();
-        return view('profile.offers', compact('profile','banks'));
+        $offerCount=0;
+        $eligibleAmount=array();
+        $yearArr=array();
+        foreach($banks as $bank){
+            //age calculation
+            $from = new DateTime($profile->dob);
+            $to   = new DateTime('today');
+            $from->format('d-m-Y');
+            $age = $from->diff($to)->y;
+            $years = 60-$age;
+            if($years>30){
+                $years=30;
+            }
+
+            $capacity = $profile->income - ((40*$profile->income)/100) - $profile->existing_emi;
+            $principalAmount = 100000;
+            $ratePerAnnum = $bank->interest_rate;
+            $rateOfInterest = $ratePerAnnum/12/100;
+            $numberInstallments = ($years)*12;
+            $emi = ($principalAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
+            $eligibility= floor(($capacity/$emi)*100000);
+
+            $loanemi = ($eligibility * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
+            $eligibleAmount[$bank->id]=$eligibility;
+            $yearArr[$bank->id]=$years;
+            if($eligibility>0){
+                $offerCount+=1;
+            }
+        }
+        return view('profile.offers', compact('profile','banks','eligibleAmount','offerCount','yearArr'));
     }
     public function apply(Request $request)
     { 
@@ -75,6 +108,12 @@ class ProfileController extends Controller
         return redirect(route('apply.documents', ['application'=>$application->id]));
     }
 
+    public function cancel(\App\Models\Application $application){
+        $application->status="cancelled";
+        $application->save();
+        return redirect(route('profile.applications'))->with('alert-success','application cancelled successfully');
+    }
+
     public function applications()
     {
         $applications = \App\Models\Application::where('mobile',session('mobile'))->paginate(10);
@@ -89,18 +128,56 @@ class ProfileController extends Controller
     {
         $rules= array(
             "identity_type"=> "required",
-            "identity_file"=> "required|mimes:pdf|max:2000",
+            "identity_file"=> "required|mimes:jpeg,bmp,png,pdf|max:2000",
             "residence_proof_type" => "required",
             "residence_proof" => "required|mimes:jpeg,bmp,png,pdf",
         );
+        if($application->employment=="business"){
+            $rules['itr1']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['itr2']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['itr3']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['qualificationCertificate']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['balanceSheet1']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['balanceSheet2']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['balanceSheet3']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['businessLicence']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['businessAddress']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['businessTDS']="required_without:form16|mimes:jpeg,bmp,png,pdf";            
+        }else{
+            $rules['salary_slip1']="required|mimes:jpeg,bmp,png,pdf";
+            $rules['salary_slip2']="required|mimes:jpeg,bmp,png,pdf";
+            $rules['salary_slip3']="required|mimes:jpeg,bmp,png,pdf";
+            $rules['form16']="nullable|mimes:jpeg,bmp,png,pdf";
+            $rules['itr1']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+            $rules['itr2']="required_without:form16|mimes:jpeg,bmp,png,pdf";
+        }
+        $validated = $request->validate($rules);
+
         
+        $documents=array();
+        $documents['identity_type'] = $request->identity_type;
+        $documents['identity_file'] = $request->file('identity_file')->store('documents/'.$application->id,'public');
+        $documents['residence_proof_type'] = $request->residence_proof_type;
+        $documents['residence_proof'] = $request->file('residence_proof')->store('documents/'.$application->id,'public');
+
         if($application->employment=="business"){
 
         }else{
-            $rules['salary_slips']="required|mimes:jpeg,bmp,png,pdf";
-            $rules['form_16']="required|image";
+            $documents['salary_slip1'] = $request->file('salary_slip1')->store('documents/'.$application->id,'public');
+            $documents['salary_slip2'] = $request->file('salary_slip2')->store('documents/'.$application->id,'public');
+            $documents['salary_slip3'] = $request->file('salary_slip3')->store('documents/'.$application->id,'public');
+            if($request->file('form16')){
+                $documents['form16'] = $request->file('form16')->store('documents/'.$application->id,'public');
+            }else{
+                $documents['itr1'] = $request->file('itr1')->store('documents/'.$application->id,'public');
+                $documents['itr2'] = $request->file('itr2')->store('documents/'.$application->id,'public');
+            }
         }
-        $validated = $request->validate($rules);
+        
+        $application->documents=json_encode($documents);
+        $application->status="submitted";
+        $application->save();
+        return redirect(route('profile.applications'))->with('alert-success','application submitted successfully');
     }
 
     /**

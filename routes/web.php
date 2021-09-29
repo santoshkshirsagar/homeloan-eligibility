@@ -29,9 +29,11 @@ Route::get('/form', function () {
 Route::get('offers', [App\Http\Controllers\ProfileController::class, 'offers'])->name('offers');
 Route::post('apply', [App\Http\Controllers\ProfileController::class, 'apply'])->name('apply');
 Route::get('documents/{application}', [App\Http\Controllers\ProfileController::class, 'documents'])->name('apply.documents');
-Route::post('submit', [App\Http\Controllers\ProfileController::class, 'submit'])->name('apply.submit');
+Route::get('cancel/{application}', [App\Http\Controllers\ProfileController::class, 'cancel'])->name('apply.cancel');
+Route::post('submit/{application}', [App\Http\Controllers\ProfileController::class, 'submit'])->name('apply.submit');
 
 Route::get('applications', [App\Http\Controllers\ProfileController::class, 'applications'])->name('profile.applications');
+Route::get('applications/{application}', [App\Http\Controllers\ProfileController::class, 'applicationview'])->name('profile.applications.view');
 
 Route::get('change',function(Request $request){
     $request->session()->forget('mobile');

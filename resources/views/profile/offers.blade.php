@@ -12,68 +12,59 @@
             </tr>
             
         </table> -->
-        @foreach($banks as $bank)
-            <?php
-            //age calculation
-            $from = new DateTime($profile->dob);
-            $to   = new DateTime('today');
-            $from->format('d-m-Y');
-            $age = $from->diff($to)->y;
-            $years = 60-$age;
-            if($years>30){
-                $years=30;
-            }
-
-            $capacity = $profile->income - ((40*$profile->income)/100) - $profile->existing_emi;
-            $principalAmount = 100000;
-            $ratePerAnnum = $bank->interest_rate;
-            $rateOfInterest = $ratePerAnnum/12/100;
-            $numberInstallments = ($years)*12;
-            $emi = ($principalAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
-            $eligibility= floor(($capacity/$emi)*100000);
-
-            $loanemi = ($eligibility * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
-            ?>
-            <!-- <tr>
-                <td>{{ $bank->name }}</td>
-                <td>{{ $bank->interest_rate }}%</td>
-                <td>
-                    @if($eligibility>0)
-                        Rs. {{ number_format($eligibility) }} <br/>
-                        <a href="" class="btn btn-primary btn-sm">
-                            Apply Now   
-                        </a>
-                    @else
-                        <span class="text-danger">Not Eligibile</span>
-                    @endif
-                </td>
-            </tr> -->
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4 text-center">
-                        <div class="card-body">
-                            <h4>{{ $bank->name }}</h4>
-                            <!-- <img src="..." class="img-fluid rounded-start" alt="..."> -->
+        
+            @if($offerCount>0)
+                <div class="text-center mb-3 shadow p-4">
+                <svg xmlns="http://www.w3.org/2000/svg" style="width:100px;" class="text-success" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                    <h1>Congratulations</h1>
+                    <h5>You have {{ $offerCount }} offers for your home loan</h5>
+                </div>
+                @foreach($banks as $bank)
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4 text-center">
+                                <div class="card-body">
+                                    <h4>{{ $bank->name }}</h4>
+                                    <!-- <img src="..." class="img-fluid rounded-start" alt="..."> -->
+                                </div>
+                            </div>
+                            <div class="col-md-8">
+                            <div class="card-body">
+                                @if($eligibleAmount[$bank->id]>0)
+                                <h5 class="card-title fs-3" style="color:#a6c938;">Rs. {{ number_format($eligibleAmount[$bank->id]) }}</h5>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ $bank->interest_rate }}% per annum</h6>
+                                <form action="{{ route('apply') }}" method="POST">
+                                    @csrf
+                                    <input type="hidden" name="bank_id" value="{{ $bank->id }}">
+                                    <input type="hidden" name="interest_rate" value="{{ $bank->interest_rate }}">
+                                    <input type="hidden" name="amount" value="{{ $eligibleAmount[$bank->id] }}">
+                                    <input type="hidden" name="years" value="{{ $yearArr[$bank->id] }}">
+                                    <button type="submit" class="btn btn-sm btn-primary">Apply Now</button>
+                                </form>
+                                @else
+                                    <span class="text-danger">Not Eligible</span>
+                                @endif
+                            </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">Rs. {{ number_format($eligibility) }}</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">{{ $bank->interest_rate }}% per annum</h6>
-                        <form action="{{ route('apply') }}" method="POST">
-                            @csrf
-                            <input type="hidden" name="bank_id" value="{{ $bank->id }}">
-                            <input type="hidden" name="interest_rate" value="{{ $bank->interest_rate }}">
-                            <input type="hidden" name="amount" value="{{ $eligibility }}">
-                            <input type="hidden" name="years" value="{{ ($years) }}">
-                            <button type="submit" class="btn btn-sm btn-primary">Apply Now</button>
-                        </form>
-                    </div>
-                    </div>
-                </div>
-            </div>
 
-        @endforeach
+                @endforeach
+
+            @else
+                <div class="text-center mb-3 shadow p-4">
+                    <h1>Oops!</h1>
+                    <h5>You are not eligible for home loan</h5>
+                    @if(!$profile->coapplicant)
+                        <p class="text-info">You might add co-applicant to get home loan</p>
+                    @endif
+                </div>
+            @endif
+        </div>
+
+        
 
     </div>
 @endsection

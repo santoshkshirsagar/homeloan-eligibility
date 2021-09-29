@@ -17,7 +17,7 @@ class CreateBanksTable extends Migration
             $table->id();
             $table->string('name');
             $table->float('interest_rate', 8, 2);
-            $table->integer('max_age_limit', 3);
+            $table->integer('max_age_limit');
             $table->timestamps();
         });
     }

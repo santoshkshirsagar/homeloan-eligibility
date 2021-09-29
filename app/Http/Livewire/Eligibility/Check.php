@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use DateTime;
 class Check extends Component
 {
-    public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile, $property_price, $required_amount, $first_home;
+    public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile, $property_price, $required_amount, $first_home, $coapplicant, $coapplicant_info;
 
     public function mount(){
         $count = \App\Models\Application::where('mobile',session('mobile'))->where('status','pending')->count();
@@ -20,6 +20,9 @@ class Check extends Component
         $this->income=0;
         $this->existing_emi=0;
         $this->mobile=session('mobile');
+
+        $this->coapplicant_info['income']=0;
+        $this->coapplicant_info['existing_emi']=0;
 
         $this->profile = \App\Models\Profile::firstOrNew([
             'mobile' => $this->mobile
@@ -50,6 +53,12 @@ class Check extends Component
         "property_price"=>"nullable|numeric",
         "required_amount"=>"nullable|numeric",
         "first_home"=>"nullable|boolean",
+        "coapplicant"=>"nullable|boolean",
+        "coapplicant_info.gender"=>"required_with:coapplicant",
+        "coapplicant_info.dob"=>"required_with:coapplicant|date|before:-18 years",
+        "coapplicant_info.employment"=>"required_with:coapplicant",
+        "coapplicant_info.income"=>"required_with:coapplicant",
+        "coapplicant_info.existing_emi"=>"required_with:coapplicant",
     ];
 
     function updatedDob()
@@ -60,10 +69,16 @@ class Check extends Component
         $age = $from->diff($to)->y;
         $this->maxYears = 60 - $age;
     }
+
+    function updatedCoapplicant(){
+        if(!$this->coapplicant){ 
+            $this->coapplicant=null; 
+        }
+    }
     public function check(){
         $validated = $this->validate();
-        $validated['mobile']=$this->mobile;
-        /* $this->profile->mobile=$this->mobile;
+        //$validated['mobile']=$this->mobile;
+        $this->profile->mobile=$this->mobile;
         $this->profile->first_name=$validated['first_name'];
         $this->profile->last_name=$validated['last_name'];
         $this->profile->email=$validated['email'];
@@ -72,8 +87,13 @@ class Check extends Component
         $this->profile->employment=$validated['employment'];
         $this->profile->income=$validated['income'];
         $this->profile->existing_emi=$validated['existing_emi'];
-        $this->profile->save(); */
-        $this->profile->update($validated);
+        $this->profile->property_price=$validated['property_price'];
+        $this->profile->required_amount=$validated['required_amount'];
+        $this->profile->first_home=$validated['first_home'];
+        $this->profile->coapplicant=$validated['coapplicant'];
+        $this->profile->coapplicant_info=json_encode($validated['coapplicant_info']);
+        $this->profile->save();
+        //$this->profile->update($validated);
         return redirect()->to('offers');
     }
     public function exit(Request $request){
