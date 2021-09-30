@@ -226,6 +226,7 @@
                                     This is my first home
                                 </label>
                             </div>
+                            <small class="text-muted">First home buyer might be eligible for Pradhan Mantri Awas Yojana (Urban)-PMAY (U). for more details visit <a target="_blank" href="https://pmaymis.gov.in/">https://pmaymis.gov.in/</a></small>
                         </div>
                     </div>
 

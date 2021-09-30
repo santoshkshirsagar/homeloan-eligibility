@@ -157,7 +157,7 @@
                     <td>Salary Slip 3</td>
                     <td><a target="_blank" href="{{ asset('storage/'.$docs->salary_slip3) }}">View</a></td>
                 </tr>
-                    @if($docs->form16)
+                    @if(isset($docs->form16))
                     <tr>
                         <td>Form 16</td>
                         <td><a target="_blank" href="{{ asset('storage/'.$docs->form16) }}">View</a></td>
