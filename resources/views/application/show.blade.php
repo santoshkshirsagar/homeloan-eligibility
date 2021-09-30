@@ -56,20 +56,93 @@
                 </tr>
             </table>
 
+            @if($application->coapplicant)
+            <h5>Co Applicant Details</h5>
+            <?php 
+                $coProfile = json_decode($application->coapplicant_info);
+            ?>
+            <table class="table table-bordered">
+                <tr>
+                    <td>Gender</td>
+                    <td>{{ $coProfile->gender }}</td>
+                </tr>
+                <tr>
+                    <td>Date of Birth</td>
+                    <td>{{ $coProfile->dob }}</td>
+                </tr>
+                <tr>
+                    <td>Employment</td>
+                    <td>{{ $coProfile->employment }}</td>
+                </tr>
+                <tr>
+                    <td>Income</td>
+                    <td>{{ $coProfile->income }}</td>
+                </tr>
+                <tr>
+                    <td>Existing EMI</td>
+                    <td>{{ $coProfile->existing_emi }}</td>
+                </tr>
+            </table>
+            @endif
             @if($application->documents)
             <h5>Documents</h5>
             <?php $docs = json_decode($application->documents) ?>
             <table class="table table-bordered">
                 <tr>
-                    <td>identity Proof</td>
-                    <td></td>
+                    <td>Identity Proof</td>
+                    <td>
+                        {{ $docs->identity_type }}
+                        <a target="_blank" href="{{ asset('storage/'.$docs->identity_file) }}">View</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>Residence Proof</td>
-                    <td></td>
+                    <td>
+                        {{ $docs->residence_proof_type }}
+                        <a target="_blank" href="{{ asset('storage/'.$docs->residence_proof) }}">View</a>
+                    </td>
                 </tr>
                 @if($application->employment=="business")
-
+                    <tr>
+                        <td>Income Tax Return 1</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->itr1) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Income Tax Return 2</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->itr2) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Income Tax Return 3</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->itr3) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Certificate of Qualification (for Doctors/CA and other professionals)</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->qualificationCertificate) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Balance Sheet 1</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->balanceSheet1) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Balance Sheet 2</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->balanceSheet2) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Balance Sheet 3</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->balanceSheet3) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Business License Details</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->businessLicence) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>Business address proof</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->businessAddress) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>TDS Certificate</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->businessTDS) }}">View</a></td>
+                    </tr>
                 @else
                 <tr>
                     <td>Salary Slip 1</td>
@@ -83,14 +156,21 @@
                     <td>Salary Slip 3</td>
                     <td><a target="_blank" href="{{ asset('storage/'.$docs->salary_slip3) }}">View</a></td>
                 </tr>
-                <tr>
-                    <td>ITR 1</td>
-                    <td><a target="_blank" href="{{ asset('storage/'.$docs->itr1) }}">View</a></td>
-                </tr>
-                <tr>
-                    <td>ITR 2</td>
-                    <td><a target="_blank" href="{{ asset('storage/'.$docs->itr2) }}">View</a></td>
-                </tr>
+                    @if($docs->form16)
+                    <tr>
+                        <td>Form 16</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->form16) }}">View</a></td>
+                    </tr>
+                    @else
+                    <tr>
+                        <td>ITR 1</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->itr1) }}">View</a></td>
+                    </tr>
+                    <tr>
+                        <td>ITR 2</td>
+                        <td><a target="_blank" href="{{ asset('storage/'.$docs->itr2) }}">View</a></td>
+                    </tr>
+                    @endif
                 @endif
             </table>
 

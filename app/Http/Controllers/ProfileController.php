@@ -72,8 +72,19 @@ class ProfileController extends Controller
             if($years>30){
                 $years=30;
             }
+            if($profile->employment=="busineess" && $years>20){
+                $years=20;
+            }
 
-            $capacity = $profile->income - ((40*$profile->income)/100) - $profile->existing_emi;
+            $totalIncome = $profile->income;
+            $totalEMI = $profile->existing_emi;
+            if($application->coapplicant){
+                $coProfile = json_decode($profile->coapplicant_info);
+                $totalIncome = $profile->income + $coProfile->income;
+                $totalEMI = $profile->existing_emi + $coProfile->existing_emi;
+            }
+
+            $capacity = $totalIncome - ((40*$totalIncome)/100) - $totalEMI;
             $principalAmount = 100000;
             $ratePerAnnum = $bank->interest_rate;
             $rateOfInterest = $ratePerAnnum/12/100;
@@ -160,8 +171,17 @@ class ProfileController extends Controller
         $documents['residence_proof_type'] = $request->residence_proof_type;
         $documents['residence_proof'] = $request->file('residence_proof')->store('documents/'.$application->id,'public');
 
-        if($application->employment=="business"){
-
+        if($application->employment=="business"){   
+            $documents['itr1'] = $request->file('itr1')->store('documents/'.$application->id,'public');
+            $documents['itr2'] = $request->file('itr2')->store('documents/'.$application->id,'public');
+            $documents['itr3'] = $request->file('itr3')->store('documents/'.$application->id,'public');
+            $documents['qualificationCertificate'] = $request->file('qualificationCertificate')->store('documents/'.$application->id,'public');
+            $documents['balanceSheet1'] = $request->file('balanceSheet1')->store('documents/'.$application->id,'public');
+            $documents['balanceSheet2'] = $request->file('balanceSheet2')->store('documents/'.$application->id,'public');
+            $documents['balanceSheet3'] = $request->file('balanceSheet3')->store('documents/'.$application->id,'public');
+            $documents['businessLicence'] = $request->file('businessLicence')->store('documents/'.$application->id,'public');
+            $documents['businessAddress'] = $request->file('businessAddress')->store('documents/'.$application->id,'public');
+            $documents['businessTDS'] = $request->file('businessTDS')->store('documents/'.$application->id,'public');
         }else{
             $documents['salary_slip1'] = $request->file('salary_slip1')->store('documents/'.$application->id,'public');
             $documents['salary_slip2'] = $request->file('salary_slip2')->store('documents/'.$application->id,'public');
