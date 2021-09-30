@@ -78,7 +78,7 @@ class ProfileController extends Controller
 
             $totalIncome = $profile->income;
             $totalEMI = $profile->existing_emi;
-            if($application->coapplicant){
+            if($profile->coapplicant){
                 $coProfile = json_decode($profile->coapplicant_info);
                 $totalIncome = $profile->income + $coProfile->income;
                 $totalEMI = $profile->existing_emi + $coProfile->existing_emi;

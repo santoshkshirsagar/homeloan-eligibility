@@ -16,6 +16,7 @@ class CreateBanksTable extends Migration
         Schema::create('banks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('email');
             $table->float('interest_rate', 8, 2);
             $table->integer('max_age_limit');
             $table->timestamps();

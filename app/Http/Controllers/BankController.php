@@ -41,6 +41,7 @@ class BankController extends Controller
         //
         $validated=$request->validate([
             "name"=>"required",
+            "email"=>"required|email",
             "interest_rate"=>"required",
             "max_age_limit"=>"required|numeric|max:70"
         ]);
@@ -83,6 +84,7 @@ class BankController extends Controller
         //
         $validated=$request->validate([
             "name"=>"required",
+            "email"=>"required|email",
             "interest_rate"=>"required",
             "max_age_limit"=>"required",
         ]);

@@ -1,7 +1,7 @@
 @extends('layouts.css')
 @section('body')
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-lg navbar-light shadow-sm" style="background-color:#b7e425;">
             <div class="container-fluid">
                 <a class="navbar-brand" href="{{ route('admin') }}">
                     {{ config('app.name', 'Laravel') }}

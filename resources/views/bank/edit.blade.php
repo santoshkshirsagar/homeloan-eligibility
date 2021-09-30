@@ -15,6 +15,13 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label for="email">Email</label>
+                    <input type="text" name="email" id="email" value="{{ $bank->email }}" class="form-control">
+                    @error('email')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label for="interest_rate">Interest_rate</label>
                     <input type="text" name="interest_rate" id="interest_rate" value="{{ $bank->interest_rate }}" class="form-control">
                     @error('interest_rate')
