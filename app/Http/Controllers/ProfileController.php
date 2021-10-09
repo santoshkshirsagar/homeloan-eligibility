@@ -68,13 +68,13 @@ class ProfileController extends Controller
             $to   = new DateTime('today');
             $from->format('d-m-Y');
             $age = $from->diff($to)->y;
-            $years = 60-$age;
-            if($years>30){
+            $years = $profile->tenure;
+            /* if($years>30){
                 $years=30;
             }
-            if($profile->employment=="busineess" && $years>20){
+            if($profile->employment=="business" && $years>20){
                 $years=20;
-            }
+            } */
 
             $totalIncome = $profile->income;
             $totalEMI = $profile->existing_emi;
@@ -95,7 +95,7 @@ class ProfileController extends Controller
             $loanemi = ($eligibility * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
             $eligibleAmount[$bank->id]=$eligibility;
             $yearArr[$bank->id]=$years;
-            if($eligibility>0){
+            if($eligibility>$profile->required_amount){
                 $offerCount+=1;
             }
         }

@@ -2,7 +2,8 @@
 
 @section('content')
     <div class="container">
-        <h1 class="mb-5">Eligibility offers</h1>
+        <a href="{{ route('form') }}" class="btn btn-sm btn-primary">Back</a>
+        <h1 class="my-5">Eligibility offers</h1>
 
         <!-- <table class="table table-bordered">
             <tr>
@@ -34,7 +35,7 @@
                             <div class="card-body">
                                 @if($eligibleAmount[$bank->id]>0)
                                 <h5 class="card-title fs-3" style="color:#a6c938;">Rs. {{ number_format($eligibleAmount[$bank->id]) }}</h5>
-                                <h6 class="card-subtitle mb-2 text-muted">{{ $bank->interest_rate }}% per annum</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">{{ $bank->interest_rate }}% per annum for {{ $yearArr[$bank->id] }} years</h6>
                                 <form action="{{ route('apply') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="bank_id" value="{{ $bank->id }}">

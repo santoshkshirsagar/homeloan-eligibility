@@ -151,6 +151,18 @@
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                             </div>
+
+                            <div class="mb-3">
+                                <div class="float-end">
+                                    <input type="text" id="tenure_year" wire:model="tenure" class="form-control text-end" value="0">
+                                </div>
+                                <label for="tenure-range" class="form-label">Tenure in Years </label>
+                                <input wire:model="tenure" type="range" class="form-range" min="0" max="{{ $maxTenure }}" id="tenure-range" value="0" oninput="document.getElementById('tenure_year').value=this.value">
+                                    @error('tenure')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                            </div>
+                            
                         </div>
                     </div>
 

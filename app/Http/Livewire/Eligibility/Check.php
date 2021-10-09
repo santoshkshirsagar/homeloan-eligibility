@@ -8,7 +8,7 @@ use Carbon\Carbon;
 use DateTime;
 class Check extends Component
 {
-    public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile, $property_price, $required_amount, $first_home, $coapplicant, $coapplicant_info;
+    public $first_name, $last_name, $email, $dob, $gender, $employment, $income, $existing_emi, $mobile, $maxDate, $profile, $property_price, $required_amount, $first_home, $coapplicant, $coapplicant_info, $tenure, $maxTenure=30;
 
     public function mount(){
         $count = \App\Models\Application::where('mobile',session('mobile'))->where('status','pending')->count();
@@ -19,6 +19,7 @@ class Check extends Component
         $this->maxDate = Carbon::now()->subYears(18)->format('Y-m-d');
         $this->income=0;
         $this->existing_emi=0;
+        $this->tenure=$this->maxTenure;
         $this->mobile=session('mobile');
 
         $this->coapplicant_info['income']=0;
@@ -52,6 +53,7 @@ class Check extends Component
         "existing_emi"=>"required",
         "property_price"=>"nullable|numeric",
         "required_amount"=>"nullable|numeric",
+        "tenure"=>"nullable|numeric",
         "first_home"=>"nullable|boolean",
         "coapplicant"=>"nullable|boolean",
         "coapplicant_info.gender"=>"required_with:coapplicant",
@@ -67,7 +69,27 @@ class Check extends Component
         $to   = new DateTime('today');
         $from->format('d-m-Y');
         $age = $from->diff($to)->y;
-        $this->maxYears = 60 - $age;
+        $years = 60 - $age;
+            if($years>30){
+                $years=30;
+            }
+            if($this->employment=="business" && $years>20){
+                $years=20;
+            }
+        $this->maxTenure=$years;
+        if($this->tenure>$this->maxTenure){
+            $this->tenure=$this->maxTenure;
+        }
+    }
+    function updatedEmployment(){
+        if($this->employment=="business" && $this->maxTenure>20){
+            $this->maxTenure=20;
+            if($this->tenure>$this->maxTenure){
+                $this->tenure=$this->maxTenure;
+            }
+        }else{
+            $this->maxTenure=30;
+        }
     }
 
     function updatedCoapplicant(){
@@ -89,6 +111,7 @@ class Check extends Component
         $this->profile->existing_emi=$validated['existing_emi'];
         $this->profile->property_price=$validated['property_price'];
         $this->profile->required_amount=$validated['required_amount'];
+        $this->profile->tenure=$validated['tenure'];
         $this->profile->first_home=$validated['first_home'];
         $this->profile->coapplicant=$validated['coapplicant'];
         $this->profile->coapplicant_info=json_encode($validated['coapplicant_info']);

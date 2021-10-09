@@ -26,6 +26,7 @@ class CreateProfilesTable extends Migration
             $table->float('existing_emi', 8, 2)->nullable();
             $table->integer('property_price')->nullable();
             $table->integer('required_amount')->nullable();
+            $table->integer('tenure')->nullable();
             $table->boolean('first_home')->nullable();
             $table->boolean('coapplicant')->nullable();
             $table->text('coapplicant_info')->nullable();
