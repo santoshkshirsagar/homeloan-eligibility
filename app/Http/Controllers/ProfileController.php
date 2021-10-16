@@ -99,7 +99,7 @@ class ProfileController extends Controller
                 $offerCount+=1;
             }
         }
-        return view('profile.offers', compact('profile','banks','eligibleAmount','offerCount','yearArr'));
+        return view('profile.offers', compact('profile','banks','eligibleAmount','offerCount','yearArr', 'loanemi'));
     }
     public function apply(Request $request)
     { 

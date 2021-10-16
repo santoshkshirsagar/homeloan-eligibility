@@ -38,6 +38,8 @@ class Check extends Component
             $this->income = $this->profile->income;
             $this->existing_emi = $this->profile->existing_emi;
         }
+        $this->updatedEmployment();
+        $this->tenure = $this->profile->tenure;
         $this->property_price = $this->profile->property_price;
         $this->required_amount = $this->profile->required_amount; 
         $this->first_home = $this->profile->first_home;
