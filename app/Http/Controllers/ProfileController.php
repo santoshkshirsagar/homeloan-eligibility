@@ -99,7 +99,19 @@ class ProfileController extends Controller
                 $offerCount+=1;
             }
         }
-        return view('profile.offers', compact('profile','banks','eligibleAmount','offerCount','yearArr', 'loanemi'));
+        $percent = 75;
+        if($profile->property_price<7500000){
+            $percent = 80;
+        }
+        if($profile->property_price<3000000){
+            $percent = 90;
+        }
+        $maxLoanOnProperty=0;
+        if($profile->property_price>0){
+            $maxLoanOnProperty= floor($percent * $profile->property_price/100);
+        }
+        
+        return view('profile.offers', compact('profile','banks','eligibleAmount','offerCount','yearArr', 'loanemi','maxLoanOnProperty'));
     }
     public function apply(Request $request)
     { 

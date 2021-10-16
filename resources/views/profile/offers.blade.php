@@ -32,7 +32,13 @@
                         </td>
                         <td>
                                 @if($eligibleAmount[$bank->id]>0)
-                                <h5 class="card-title fs-3" style="color:#a6c938;">Rs. {{ number_format($eligibleAmount[$bank->id]) }}</h5>
+                                
+                                @if($maxLoanOnProperty>0)
+                                    <h5 class="card-title fs-3" style="color:#a6c938;">Rs. {{ $maxLoanOnProperty }}</h5>
+                                    <p class="text-info">Based on property value</p>
+                                @else
+                                    <h5 class="card-title fs-3" style="color:#a6c938;">Rs.{{ number_format($eligibleAmount[$bank->id]) }}</h5>
+                                @endif
                                 <form action="{{ route('apply') }}" method="POST">
                                     @csrf
                                     <input type="hidden" name="bank_id" value="{{ $bank->id }}">
