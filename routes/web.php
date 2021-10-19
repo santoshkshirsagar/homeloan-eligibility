@@ -43,6 +43,7 @@ Route::prefix('admin')->middleware('auth')->group(function () {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'dashboard'])->name('admin');
     Route::resource('user','App\Http\Controllers\UserController');
     Route::resource('application', 'App\Http\Controllers\ApplicationController');
+    Route::resource('profile', 'App\Http\Controllers\ProfileController');
     Route::resource('bank', 'App\Http\Controllers\BankController');
     Route::resource('page','App\Http\Controllers\PageController');
 });

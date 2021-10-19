@@ -16,6 +16,9 @@ class ProfileController extends Controller
     public function index()
     {
         //
+        $limit=10;
+        $profiles = Profile::paginate($limit);
+        return view('profile.index', compact('profiles'));
     }
 
     /**
@@ -132,6 +135,7 @@ class ProfileController extends Controller
     { 
         $profile = Profile::where('mobile',session('mobile'))->firstOrFail();
         $profileData = $profile->toArray();
+        unset($profileData['tenure']);
         unset($profileData['created_at']);
         unset($profileData['updated_at']);
         unset($profileData['id']);

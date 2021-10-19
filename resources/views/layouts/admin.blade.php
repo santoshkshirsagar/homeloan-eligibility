@@ -56,6 +56,9 @@
                         <a class="nav-link @if(url()->current()==route('admin')) active @endif" href="{{ route('admin') }}">Dashboard</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link @if(url()->current()==route('profile.index')) active @endif" href="{{ route('profile.index') }}">Profiles</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link @if(url()->current()==route('application.index')) active @endif" href="{{ route('application.index') }}">Applications</a>
                     </li>
                     <li class="nav-item">

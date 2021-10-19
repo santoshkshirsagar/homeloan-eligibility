@@ -80,7 +80,7 @@ class Check extends Component
                 $years=20;
             }
         $this->maxTenure=$years;
-        if($this->tenure>$this->maxTenure){
+        if($this->tenure>$this->maxTenure || $this->tenure==null){
             $this->tenure=$this->maxTenure;
         }
     }
