@@ -61,7 +61,7 @@ class ProfileController extends Controller
         $banks = \App\Models\Bank::get();
         $offerCount=0;
         $eligibleAmount=array();
-        $yearArr=array();
+        $emiArr=array();
         $percent = 75;
         if($profile->property_price<7500000){
             $percent = 80;
@@ -80,12 +80,12 @@ class ProfileController extends Controller
             $from->format('d-m-Y');
             $age = $from->diff($to)->y;
             $years = $profile->tenure;
-            /* if($years>30){
+            if($years>30){
                 $years=30;
             }
             if($profile->employment=="business" && $years>20){
                 $years=20;
-            } */
+            }
 
             $totalIncome = $profile->income;
             $totalEMI = $profile->existing_emi;
@@ -112,7 +112,7 @@ class ProfileController extends Controller
             
             $loanemi = ($loanAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
             $eligibleAmount[$bank->id]=$loanAmount;
-            $yearArr[$bank->id]=$years;
+            $emiArr[$bank->id]=$loanemi;
             if($eligibility>=$loanAmount){
                 $offerCount+=1;
             }
@@ -120,7 +120,7 @@ class ProfileController extends Controller
         
         
         
-        return view('profile.offers', compact('profile','banks','eligibleAmount','offerCount','yearArr', 'loanemi','maxLoanOnProperty'));
+        return view('profile.offers', compact('profile','banks','eligibleAmount', 'emiArr', 'offerCount','years', 'loanemi','maxLoanOnProperty'));
     }
     public function apply(Request $request)
     { 

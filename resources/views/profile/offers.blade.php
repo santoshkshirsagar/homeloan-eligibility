@@ -38,7 +38,8 @@
                                         <input type="hidden" name="bank_id" value="{{ $bank->id }}">
                                         <input type="hidden" name="interest_rate" value="{{ $bank->interest_rate }}">
                                         <input type="hidden" name="amount" value="{{ $eligibleAmount[$bank->id] }}">
-                                        <input type="hidden" name="years" value="{{ $yearArr[$bank->id] }}">
+                                        <input type="hidden" name="years" value="{{ $years }}">
+                                        <input type="hidden" name="emi" value="{{ $emiArr[$bank->id] }}">
                                         <button type="submit" class="ˀbtn btn-sm btn-primary">Apply Now</button>
                                     </form>
                                 @else
@@ -46,10 +47,10 @@
                                 @endif
                         </td>
                         <td>
-                            @livewire('profile.tenure',['tenure'=>$yearArr[$bank->id]])
+                            @livewire('profile.tenure',['tenure'=>$years])
                         </td>
                         <td>
-                            {{ floor($loanemi) }}
+                            {{ floor($emiArr[$bank->id]) }}
                         </td>
                     </tr>
 

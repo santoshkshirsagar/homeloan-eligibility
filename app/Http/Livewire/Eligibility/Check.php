@@ -111,8 +111,8 @@ class Check extends Component
         $this->profile->employment=$validated['employment'];
         $this->profile->income=$validated['income'];
         $this->profile->existing_emi=$validated['existing_emi'];
-        $this->profile->property_price=$validated['property_price'];
-        $this->profile->required_amount=$validated['required_amount'];
+        $this->profile->property_price= ($validated['property_price']=="") ? 0 : $validated['property_price'];
+        $this->profile->required_amount=($validated['required_amount']=="") ? 0 : $validated['required_amount'];
         $this->profile->tenure=$validated['tenure'];
         $this->profile->first_home=$validated['first_home'];
         $this->profile->coapplicant=$validated['coapplicant'];
