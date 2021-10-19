@@ -63,10 +63,10 @@ class ProfileController extends Controller
         $eligibleAmount=array();
         $emiArr=array();
         $percent = 75;
-        if($profile->property_price<7500000){
+        if($profile->property_price<=7500000){
             $percent = 80;
         }
-        if($profile->property_price<3000000){
+        if($profile->property_price<=3000000){
             $percent = 90;
         }
         $maxLoanOnProperty=0;
