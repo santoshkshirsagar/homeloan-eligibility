@@ -3,7 +3,6 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <a href="{{ route('profile.create') }}" class="btn btn-primary float-end">Add</a>
             <h1>profiles</h1>
             <table class="table table-responsive table-striped">
                 <tr>
