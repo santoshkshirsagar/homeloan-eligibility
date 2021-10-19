@@ -96,31 +96,37 @@ class ProfileController extends Controller
             }
 
             $capacity = $totalIncome - ((40*$totalIncome)/100) - $totalEMI;
-            $principalAmount = 100000;
-            $ratePerAnnum = $bank->interest_rate;
-            $rateOfInterest = $ratePerAnnum/12/100;
-            $numberInstallments = ($years)*12;
-            $emi = ($principalAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
-            $eligibility= floor(($capacity/$emi)*100000);
-
-            $loanAmount=$eligibility;
-            if($profile->required_amount>0){
-                $loanAmount=$profile->required_amount;
-            }elseif($maxLoanOnProperty>0){
-                $loanAmount=$maxLoanOnProperty;
-            }
-            
-            $loanemi = ($loanAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
-            $eligibleAmount[$bank->id]=$loanAmount;
-            $emiArr[$bank->id]=$loanemi;
-            if($eligibility>=$loanAmount){
-                $offerCount+=1;
+            if($capacity<0){
+                $loanemi = 0;
+                $eligibleAmount[$bank->id]=0;
+                $emiArr[$bank->id]=0;
+            }else{
+                $principalAmount = 100000;
+                $ratePerAnnum = $bank->interest_rate;
+                $rateOfInterest = $ratePerAnnum/12/100;
+                $numberInstallments = ($years)*12;
+                $emi = ($principalAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
+                $eligibility= floor(($capacity/$emi)*100000);
+    
+                $loanAmount=$eligibility;
+                if($profile->required_amount>0){
+                    $loanAmount=$profile->required_amount;
+                }elseif($maxLoanOnProperty>0){
+                    $loanAmount=$maxLoanOnProperty;
+                }
+                
+                $loanemi = ($loanAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
+                $eligibleAmount[$bank->id]=$loanAmount;
+                $emiArr[$bank->id]=$loanemi;
+                if($eligibility>=$loanAmount){
+                    $offerCount+=1;
+                }
             }
         }
         
         
         
-        return view('profile.offers', compact('profile','banks','eligibleAmount', 'emiArr', 'offerCount','years', 'loanemi','maxLoanOnProperty'));
+        return view('profile.offers', compact('profile','banks','eligibleAmount', 'emiArr', 'offerCount','years','maxLoanOnProperty'));
     }
     public function apply(Request $request)
     { 

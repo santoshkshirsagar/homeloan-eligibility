@@ -38,11 +38,12 @@ class Check extends Component
             $this->income = $this->profile->income;
             $this->existing_emi = $this->profile->existing_emi;
         }
-        $this->updatedDob();
         $this->tenure = $this->profile->tenure;
         $this->property_price = $this->profile->property_price;
         $this->required_amount = $this->profile->required_amount; 
         $this->first_home = $this->profile->first_home;
+
+        $this->updatedDob();
     }
     protected $rules = [
         "first_name"=>"required",
@@ -84,14 +85,7 @@ class Check extends Component
         }
     }
     function updatedEmployment(){
-        if($this->employment=="business" && $this->maxTenure>20){
-            $this->maxTenure=20;
-            if($this->tenure>$this->maxTenure){
-                $this->tenure=$this->maxTenure;
-            }
-        }else{
-            $this->maxTenure=30;
-        }
+        $this->updatedDob();
     }
 
     function updatedCoapplicant(){
