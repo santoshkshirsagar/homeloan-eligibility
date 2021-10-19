@@ -62,6 +62,17 @@ class ProfileController extends Controller
         $offerCount=0;
         $eligibleAmount=array();
         $yearArr=array();
+        $percent = 75;
+        if($profile->property_price<7500000){
+            $percent = 80;
+        }
+        if($profile->property_price<3000000){
+            $percent = 90;
+        }
+        $maxLoanOnProperty=0;
+        if($profile->property_price>0){
+            $maxLoanOnProperty= floor($percent * $profile->property_price/100);
+        }
         foreach($banks as $bank){
             //age calculation
             $from = new DateTime($profile->dob);
@@ -92,24 +103,22 @@ class ProfileController extends Controller
             $emi = ($principalAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
             $eligibility= floor(($capacity/$emi)*100000);
 
-            $loanemi = ($eligibility * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
-            $eligibleAmount[$bank->id]=$eligibility;
+            $loanAmount=$eligibility;
+            if($profile->required_amount>0){
+                $loanAmount=$profile->required_amount;
+            }elseif($maxLoanOnProperty>0){
+                $loanAmount=$maxLoanOnProperty;
+            }
+            
+            $loanemi = ($loanAmount * $rateOfInterest * pow(1+$rateOfInterest, $numberInstallments))/ (pow((1+$rateOfInterest), $numberInstallments)-1);
+            $eligibleAmount[$bank->id]=$loanAmount;
             $yearArr[$bank->id]=$years;
-            if($eligibility>$profile->required_amount){
+            if($eligibility>=$loanAmount){
                 $offerCount+=1;
             }
         }
-        $percent = 75;
-        if($profile->property_price<7500000){
-            $percent = 80;
-        }
-        if($profile->property_price<3000000){
-            $percent = 90;
-        }
-        $maxLoanOnProperty=0;
-        if($profile->property_price>0){
-            $maxLoanOnProperty= floor($percent * $profile->property_price/100);
-        }
+        
+        
         
         return view('profile.offers', compact('profile','banks','eligibleAmount','offerCount','yearArr', 'loanemi','maxLoanOnProperty'));
     }
