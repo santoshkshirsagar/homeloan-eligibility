@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col">
-            <h1>profiles</h1>
+            <h1>Profiles</h1>
             <table class="table table-responsive table-striped">
                 <tr>
                     <th>Id</th>
